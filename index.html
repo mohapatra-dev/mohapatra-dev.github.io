@@ -1,111 +1,720 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Alisha Mohapatra | Frontend Web Developer</title>
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet" />
-    <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
-    <style>
-      body {
-        font-family: 'Inter', sans-serif;
-        background-image: url('https://www.transparenttextures.com/patterns/paper-fibers.png');
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Alisha Mohapatra — Frontend Developer</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400&family=DM+Sans:wght@300;400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet"/>
+<style>
+  :root {
+    --gold: #e8c97a;
+    --teal: #2dd4bf;
+    --coral: #f87171;
+    --violet: #a78bfa;
+    --emerald: #34d399;
+    --bg: #080810;
+    --bg2: #0e0e1a;
+    --surface: #13132a;
+    --border: rgba(232,201,122,0.15);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: #e2e2f0;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 300;
+    overflow-x: hidden;
+  }
+
+  /* ── Noise grain overlay ── */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.035'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 9999;
+    opacity: 0.4;
+  }
+
+  /* ── Orb background ── */
+  .orb { position: fixed; border-radius: 50%; filter: blur(110px); pointer-events: none; z-index: 0; }
+  .orb-1 { width: 520px; height: 520px; background: radial-gradient(circle, rgba(45,212,191,0.12), transparent 70%); top: -100px; left: -140px; }
+  .orb-2 { width: 440px; height: 440px; background: radial-gradient(circle, rgba(167,139,250,0.11), transparent 70%); bottom: 0; right: -100px; }
+  .orb-3 { width: 300px; height: 300px; background: radial-gradient(circle, rgba(232,201,122,0.09), transparent 70%); top: 40%; left: 50%; }
+
+  /* ── Nav ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    backdrop-filter: blur(20px);
+    background: rgba(8,8,16,0.75);
+    border-bottom: 1px solid var(--border);
+    padding: 1rem 2rem;
+    display: flex; justify-content: space-between; align-items: center;
+    transition: all 0.3s;
+  }
+  .nav-logo {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.5rem; font-weight: 600;
+    background: linear-gradient(90deg, var(--gold), var(--teal));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    letter-spacing: 0.02em;
+  }
+  .nav-links a {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.68rem; letter-spacing: 0.12em; text-transform: uppercase;
+    color: #94a3b8; text-decoration: none; margin-left: 2rem;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--gold); }
+
+  /* ── Section base ── */
+  section { position: relative; z-index: 1; }
+
+  /* ── Hero ── */
+  #hero {
+    min-height: 100vh;
+    display: flex; flex-direction: column; justify-content: center; align-items: flex-start;
+    padding: 7rem 8% 4rem;
+  }
+  .hero-tag {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--teal); margin-bottom: 1.5rem;
+    display: flex; align-items: center; gap: 0.75rem;
+  }
+  .hero-tag::before { content: ''; display: block; width: 40px; height: 1px; background: var(--teal); }
+  .hero-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(3.5rem, 9vw, 7.5rem);
+    font-weight: 300; line-height: 1.0;
+    color: #f0eefc; letter-spacing: -0.01em;
+  }
+  .hero-name span {
+    font-style: italic;
+    background: linear-gradient(135deg, var(--gold) 0%, var(--coral) 60%, var(--violet) 100%);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  }
+  .hero-sub {
+    font-size: 1.15rem; color: #94a3b8; margin-top: 1.5rem; max-width: 560px; line-height: 1.7;
+  }
+  .hero-badges { display: flex; flex-wrap: wrap; gap: 0.75rem; margin-top: 2rem; }
+  .badge {
+    font-family: 'Space Mono', monospace; font-size: 0.65rem;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    padding: 0.4rem 1rem; border-radius: 100px;
+    border: 1px solid; cursor: default; transition: all 0.25s;
+  }
+  .badge-teal  { border-color: var(--teal);   color: var(--teal);   }
+  .badge-gold  { border-color: var(--gold);   color: var(--gold);   }
+  .badge-coral { border-color: var(--coral);  color: var(--coral);  }
+  .badge-violet{ border-color: var(--violet); color: var(--violet); }
+  .badge:hover { background: rgba(255,255,255,0.05); transform: translateY(-2px); }
+
+  .hero-cta { margin-top: 2.5rem; display: flex; gap: 1rem; flex-wrap: wrap; }
+  .btn-primary {
+    font-family: 'Space Mono', monospace; font-size: 0.7rem;
+    letter-spacing: 0.15em; text-transform: uppercase;
+    padding: 0.85rem 2rem; border-radius: 4px;
+    background: linear-gradient(135deg, var(--gold), var(--teal));
+    color: #080810; font-weight: 700; text-decoration: none;
+    transition: all 0.25s; box-shadow: 0 0 30px rgba(45,212,191,0.25);
+  }
+  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 0 45px rgba(45,212,191,0.4); }
+  .btn-ghost {
+    font-family: 'Space Mono', monospace; font-size: 0.7rem;
+    letter-spacing: 0.15em; text-transform: uppercase;
+    padding: 0.85rem 2rem; border-radius: 4px;
+    border: 1px solid var(--border); color: #94a3b8; text-decoration: none;
+    transition: all 0.25s;
+  }
+  .btn-ghost:hover { border-color: var(--gold); color: var(--gold); transform: translateY(-2px); }
+
+  /* ── Divider ── */
+  .sec-divider {
+    display: flex; align-items: center; gap: 1.5rem; margin-bottom: 4rem;
+  }
+  .sec-label {
+    font-family: 'Space Mono', monospace; font-size: 0.65rem;
+    letter-spacing: 0.22em; text-transform: uppercase; color: var(--gold);
+    white-space: nowrap;
+  }
+  .sec-line { flex: 1; height: 1px; background: var(--border); }
+  .sec-num { font-family: 'Space Mono', monospace; font-size: 0.6rem; color: #334155; }
+
+  /* ── Generic section wrapper ── */
+  .sec-wrap { padding: 6rem 8%; }
+  .sec-heading {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2.2rem, 5vw, 3.8rem); font-weight: 300;
+    color: #f0eefc; line-height: 1.1; margin-bottom: 3rem;
+  }
+  .sec-heading em { font-style: italic; color: var(--gold); }
+
+  /* ── About ── */
+  #about { background: var(--bg2); }
+  .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: start; }
+  .about-text { font-size: 1.05rem; line-height: 1.85; color: #94a3b8; }
+  .about-text strong { color: #e2e2f0; font-weight: 500; }
+  .stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+  .stat-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px; padding: 1.5rem;
+    transition: all 0.3s;
+  }
+  .stat-card:hover { border-color: var(--teal); transform: translateY(-3px); }
+  .stat-number {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2.8rem; font-weight: 600; line-height: 1;
+    background: linear-gradient(135deg, var(--gold), var(--teal));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  }
+  .stat-label { font-size: 0.75rem; color: #64748b; margin-top: 0.4rem; letter-spacing: 0.05em; }
+
+  /* ── Skills ── */
+  #skills { }
+  .skills-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; }
+  .skill-category {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px; padding: 2rem;
+    transition: all 0.3s; position: relative; overflow: hidden;
+  }
+  .skill-category::before {
+    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+  }
+  .cat-frontend::before { background: linear-gradient(90deg, var(--teal), var(--violet)); }
+  .cat-tools::before   { background: linear-gradient(90deg, var(--gold), var(--coral)); }
+  .cat-design::before  { background: linear-gradient(90deg, var(--violet), var(--teal)); }
+  .cat-ai::before      { background: linear-gradient(90deg, var(--coral), var(--gold)); }
+  .skill-category:hover { transform: translateY(-4px); border-color: rgba(255,255,255,0.12); }
+  .cat-title {
+    font-family: 'Space Mono', monospace; font-size: 0.65rem;
+    letter-spacing: 0.18em; text-transform: uppercase; margin-bottom: 1.5rem;
+  }
+  .cat-title.teal   { color: var(--teal); }
+  .cat-title.gold   { color: var(--gold); }
+  .cat-title.violet { color: var(--violet); }
+  .cat-title.coral  { color: var(--coral); }
+  .skill-pill {
+    display: inline-block; padding: 0.35rem 0.85rem;
+    background: rgba(255,255,255,0.05); border-radius: 100px;
+    font-size: 0.8rem; color: #c4c4e0; margin: 0.25rem;
+    border: 1px solid rgba(255,255,255,0.07);
+    transition: all 0.2s;
+  }
+  .skill-pill:hover { background: rgba(45,212,191,0.1); border-color: var(--teal); color: var(--teal); }
+
+  /* ── Experience ── */
+  #experience { background: var(--bg2); }
+  .exp-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 20px; padding: 2.5rem 3rem;
+    position: relative; overflow: hidden;
+  }
+  .exp-card::after {
+    content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 3px;
+    background: linear-gradient(180deg, var(--teal), var(--violet));
+    border-radius: 4px;
+  }
+  .exp-header { display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 1rem; margin-bottom: 1.5rem; }
+  .exp-role { font-family: 'Cormorant Garamond', serif; font-size: 1.9rem; font-weight: 600; color: #f0eefc; }
+  .exp-company {
+    font-family: 'Space Mono', monospace; font-size: 0.7rem;
+    letter-spacing: 0.1em; text-transform: uppercase; color: var(--teal); margin-top: 0.25rem;
+  }
+  .exp-date {
+    font-family: 'Space Mono', monospace; font-size: 0.65rem;
+    letter-spacing: 0.1em; color: #475569;
+    background: rgba(255,255,255,0.04); border: 1px solid var(--border);
+    padding: 0.4rem 0.9rem; border-radius: 100px;
+  }
+  .exp-bullets { list-style: none; display: flex; flex-direction: column; gap: 0.85rem; }
+  .exp-bullets li {
+    display: flex; gap: 1rem; align-items: flex-start;
+    font-size: 0.93rem; color: #94a3b8; line-height: 1.7;
+  }
+  .exp-bullets li::before {
+    content: '▹'; color: var(--teal); font-size: 0.8rem; margin-top: 0.3rem; flex-shrink: 0;
+  }
+
+  /* ── Projects ── */
+  #projects { }
+  .projects-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 1.5rem; }
+  .proj-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px; padding: 2rem;
+    transition: all 0.3s; position: relative; overflow: hidden;
+    display: flex; flex-direction: column;
+  }
+  .proj-card:hover { transform: translateY(-5px); border-color: rgba(255,255,255,0.15); }
+  .proj-glow {
+    position: absolute; top: -40px; right: -40px;
+    width: 120px; height: 120px; border-radius: 50%;
+    filter: blur(50px); opacity: 0.4; pointer-events: none;
+  }
+  .proj-card:nth-child(1) .proj-glow { background: var(--teal); }
+  .proj-card:nth-child(2) .proj-glow { background: var(--violet); }
+  .proj-card:nth-child(3) .proj-glow { background: var(--gold); }
+  .proj-card:nth-child(4) .proj-glow { background: var(--coral); }
+  .proj-card:nth-child(5) .proj-glow { background: var(--emerald); }
+  .proj-num {
+    font-family: 'Cormorant Garamond', serif; font-size: 3rem; font-weight: 300;
+    color: rgba(255,255,255,0.05); line-height: 1; margin-bottom: 0.5rem;
+  }
+  .proj-title { font-family: 'Cormorant Garamond', serif; font-size: 1.55rem; font-weight: 600; color: #f0eefc; margin-bottom: 0.4rem; }
+  .proj-type {
+    font-family: 'Space Mono', monospace; font-size: 0.6rem; letter-spacing: 0.15em;
+    text-transform: uppercase; margin-bottom: 1rem;
+  }
+  .proj-card:nth-child(1) .proj-type { color: var(--teal); }
+  .proj-card:nth-child(2) .proj-type { color: var(--violet); }
+  .proj-card:nth-child(3) .proj-type { color: var(--gold); }
+  .proj-card:nth-child(4) .proj-type { color: var(--coral); }
+  .proj-card:nth-child(5) .proj-type { color: var(--emerald); }
+  .proj-desc { font-size: 0.88rem; color: #64748b; line-height: 1.7; flex: 1; }
+  .proj-stack { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-top: 1.25rem; }
+  .tech-tag {
+    font-family: 'Space Mono', monospace; font-size: 0.6rem;
+    padding: 0.25rem 0.6rem; border-radius: 4px;
+    background: rgba(255,255,255,0.04); color: #475569;
+    border: 1px solid rgba(255,255,255,0.06);
+  }
+
+  /* ── Education ── */
+  #education { background: var(--bg2); }
+  .edu-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; }
+  .edu-card {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 16px; padding: 2rem; transition: all 0.3s;
+  }
+  .edu-card:hover { border-color: var(--gold); transform: translateY(-3px); }
+  .edu-icon { font-size: 1.8rem; margin-bottom: 1rem; }
+  .edu-degree { font-family: 'Cormorant Garamond', serif; font-size: 1.4rem; font-weight: 600; color: #f0eefc; line-height: 1.3; }
+  .edu-inst { font-size: 0.85rem; color: #64748b; margin-top: 0.4rem; }
+  .cert-list { display: flex; flex-direction: column; gap: 0.75rem; }
+  .cert-item {
+    display: flex; align-items: center; gap: 1rem; padding: 0.85rem 1rem;
+    background: rgba(255,255,255,0.03); border-radius: 10px; border: 1px solid rgba(255,255,255,0.05);
+    transition: all 0.2s;
+  }
+  .cert-item:hover { border-color: var(--teal); background: rgba(45,212,191,0.05); }
+  .cert-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+  .cert-dot.gold   { background: var(--gold); box-shadow: 0 0 8px var(--gold); }
+  .cert-dot.teal   { background: var(--teal); box-shadow: 0 0 8px var(--teal); }
+  .cert-name { font-size: 0.88rem; color: #e2e2f0; }
+  .cert-year { font-family: 'Space Mono', monospace; font-size: 0.65rem; color: #475569; margin-left: auto; }
+
+  /* ── Contact strip ── */
+  #contact {
+    padding: 5rem 8%;
+    display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 2rem;
+    border-top: 1px solid var(--border);
+  }
+  .contact-heading { font-family: 'Cormorant Garamond', serif; font-size: clamp(2rem, 4vw, 3rem); font-weight: 300; }
+  .contact-heading em { font-style: italic; color: var(--teal); }
+  .contact-links { display: flex; gap: 1rem; flex-wrap: wrap; }
+  .contact-link {
+    font-family: 'Space Mono', monospace; font-size: 0.65rem; letter-spacing: 0.12em;
+    text-transform: uppercase; text-decoration: none; padding: 0.75rem 1.5rem;
+    border-radius: 6px; border: 1px solid var(--border); color: #94a3b8;
+    display: flex; align-items: center; gap: 0.6rem; transition: all 0.25s;
+  }
+  .contact-link:hover { border-color: var(--gold); color: var(--gold); transform: translateY(-2px); }
+
+  /* ── Footer ── */
+  footer {
+    padding: 1.5rem 8%;
+    display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;
+    border-top: 1px solid rgba(255,255,255,0.04);
+  }
+  .footer-brand { font-family: 'Cormorant Garamond', serif; font-size: 1.1rem; color: #334155; }
+  .footer-note { font-family: 'Space Mono', monospace; font-size: 0.6rem; color: #1e293b; letter-spacing: 0.1em; }
+
+  /* ── Scroll reveal ── */
+  .reveal { opacity: 0; transform: translateY(30px); transition: opacity 0.7s ease, transform 0.7s ease; }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+
+  /* ── Scrollbar ── */
+  ::-webkit-scrollbar { width: 4px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: linear-gradient(var(--teal), var(--violet)); border-radius: 4px; }
+
+  /* ── Mobile ── */
+  @media (max-width: 768px) {
+    .about-grid, .edu-grid { grid-template-columns: 1fr; }
+    .sec-wrap { padding: 4rem 5%; }
+    #hero { padding: 7rem 5% 3rem; }
+    #contact { padding: 4rem 5%; }
+    footer { padding: 1.5rem 5%; }
+    nav { padding: 1rem 5%; }
+    .nav-links a { margin-left: 1rem; }
+    .exp-card { padding: 1.75rem; }
+    .projects-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Background orbs -->
+<div class="orb orb-1"></div>
+<div class="orb orb-2"></div>
+<div class="orb orb-3"></div>
+
+<!-- ── NAV ── -->
+<nav id="navbar">
+  <div class="nav-logo">AM</div>
+  <div class="nav-links">
+    <a href="#about">About</a>
+    <a href="#skills">Skills</a>
+    <a href="#experience">Work</a>
+    <a href="#projects">Projects</a>
+    <a href="#contact">Contact</a>
+  </div>
+</nav>
+
+<!-- ── HERO ── -->
+<section id="hero">
+  <div class="hero-tag">Frontend Developer</div>
+  <h1 class="hero-name">
+    Alisha<br><span>Mohapatra</span>
+  </h1>
+  <p class="hero-sub">
+    Building responsive, high-performance B2B & e-commerce web applications with a strong focus on UI consistency, accessibility, and delightful user experience.
+  </p>
+  <div class="hero-badges">
+    <span class="badge badge-teal">HTML5 / CSS3</span>
+    <span class="badge badge-gold">JavaScript</span>
+    <span class="badge badge-violet">Tailwind CSS</span>
+    <span class="badge badge-coral">Performance Opt.</span>
+    <span class="badge badge-teal">2+ Years Exp.</span>
+  </div>
+  <div class="hero-cta">
+    <a href="mailto:mohapatraalisha29@gmail.com" class="btn-primary">Get In Touch</a>
+    <a href="#projects" class="btn-ghost">View Projects</a>
+  </div>
+</section>
+
+<!-- ── ABOUT ── -->
+<section id="about" class="sec-wrap">
+  <div class="sec-divider reveal">
+    <span class="sec-num">01</span>
+    <span class="sec-line"></span>
+    <span class="sec-label">About Me</span>
+  </div>
+  <h2 class="sec-heading reveal">Crafting <em>digital</em><br>experiences that matter.</h2>
+  <div class="about-grid">
+    <div class="about-text reveal">
+      <p>Frontend Developer with <strong>2+ years of experience</strong> building responsive B2B and e-commerce web applications. Specialized in <strong>HTML, CSS, JavaScript, and Tailwind CSS</strong> with a strong focus on performance optimization, UI consistency, and accessibility.</p>
+      <br/>
+      <p>Based in <strong>Faridabad</strong>, currently working at <strong>Spinks World, Gurugram</strong> — delivering end-to-end frontend solutions for real-world clients across industries. Passionate about translating pixel-perfect designs into clean, scalable, and maintainable code.</p>
+      <br/>
+      <p>Beyond code, I leverage <strong>AI-assisted tools</strong> like ChatGPT and GitHub Copilot to accelerate development workflows and optimize performance analysis.</p>
+      <br/>
+      <div style="display:flex;flex-wrap:wrap;gap:0.5rem;">
+        <span style="font-family:'Space Mono',monospace;font-size:0.65rem;color:#475569;">📍 Faridabad, India</span>
+        <span style="font-family:'Space Mono',monospace;font-size:0.65rem;color:#475569;">📧 mohapatraalisha29@gmail.com</span>
+        <span style="font-family:'Space Mono',monospace;font-size:0.65rem;color:#475569;">📞 +91 8287878520</span>
+      </div>
+    </div>
+    <div class="stat-grid reveal">
+      <div class="stat-card">
+        <div class="stat-number">2+</div>
+        <div class="stat-label">Years of Experience</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number">5+</div>
+        <div class="stat-label">Projects Delivered</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number">20%</div>
+        <div class="stat-label">Page Load Reduction</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number">100%</div>
+        <div class="stat-label">Client-Ready Delivery</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── SKILLS ── -->
+<section id="skills" class="sec-wrap">
+  <div class="sec-divider reveal">
+    <span class="sec-num">02</span>
+    <span class="sec-line"></span>
+    <span class="sec-label">Skills & Tools</span>
+  </div>
+  <h2 class="sec-heading reveal">Technologies I <em>work with</em>.</h2>
+  <div class="skills-grid">
+
+    <div class="skill-category cat-frontend reveal">
+      <div class="cat-title teal">Frontend Stack</div>
+      <div>
+        <span class="skill-pill">HTML5</span>
+        <span class="skill-pill">CSS3</span>
+        <span class="skill-pill">JavaScript</span>
+        <span class="skill-pill">Tailwind CSS</span>
+        <span class="skill-pill">Bootstrap</span>
+        <span class="skill-pill">Sass</span>
+        <span class="skill-pill">PHP</span>
+      </div>
+    </div>
+
+    <div class="skill-category cat-tools reveal">
+      <div class="cat-title gold">Dev Tools</div>
+      <div>
+        <span class="skill-pill">Git</span>
+        <span class="skill-pill">GitHub</span>
+        <span class="skill-pill">Figma</span>
+        <span class="skill-pill">Chrome DevTools</span>
+        <span class="skill-pill">VS Code</span>
+      </div>
+    </div>
+
+    <div class="skill-category cat-design reveal">
+      <div class="cat-title violet">UI/UX & Design</div>
+      <div>
+        <span class="skill-pill">Responsive Design</span>
+        <span class="skill-pill">Mobile-First</span>
+        <span class="skill-pill">WCAG Accessibility</span>
+        <span class="skill-pill">Design Systems</span>
+        <span class="skill-pill">UI Components</span>
+        <span class="skill-pill">UI/UX Principles</span>
+      </div>
+    </div>
+
+    <div class="skill-category cat-ai reveal">
+      <div class="cat-title coral">AI-Assisted Workflow</div>
+      <div>
+        <span class="skill-pill">ChatGPT</span>
+        <span class="skill-pill">GitHub Copilot</span>
+        <span class="skill-pill">AI Debugging</span>
+        <span class="skill-pill">Performance Analysis</span>
+        <span class="skill-pill">Web Perf. Optimization</span>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ── EXPERIENCE ── -->
+<section id="experience" class="sec-wrap">
+  <div class="sec-divider reveal">
+    <span class="sec-num">03</span>
+    <span class="sec-line"></span>
+    <span class="sec-label">Work Experience</span>
+  </div>
+  <h2 class="sec-heading reveal">Where I've <em>built</em><br>things that ship.</h2>
+  <div class="exp-card reveal">
+    <div class="exp-header">
+      <div>
+        <div class="exp-role">Web Developer</div>
+        <div class="exp-company">Spinks World — Gurugram</div>
+      </div>
+      <span class="exp-date">May 2023 – Present</span>
+    </div>
+    <ul class="exp-bullets">
+      <li>Designed and developed 2+ industry-based and B2B web applications, handling end-to-end frontend development using HTML5, CSS3, JavaScript, Tailwind CSS, Bootstrap, and PHP.</li>
+      <li>Reduced page load time by ~20% through performance optimization techniques, improving user experience across desktop and mobile devices.</li>
+      <li>Built fully responsive, mobile-first UI components used by real clients, ensuring consistent behaviour across browsers and screen sizes.</li>
+      <li>Collaborated closely with UI/UX designers and backend developers to translate designs into clean, scalable, and maintainable code.</li>
+      <li>Improved UI consistency and overall user experience by following design systems, reusable components, and best frontend practices.</li>
+      <li>Used AI tools (ChatGPT, Copilot) to optimize frontend code, improve UI consistency, and accelerate development workflows.</li>
+      <li>Applied AI-assisted debugging and performance analysis to reduce page load time by ~20%.</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ── PROJECTS ── -->
+<section id="projects" class="sec-wrap" style="background:var(--bg2);">
+  <div class="sec-divider reveal">
+    <span class="sec-num">04</span>
+    <span class="sec-line"></span>
+    <span class="sec-label">Projects</span>
+  </div>
+  <h2 class="sec-heading reveal">Work I'm <em>proud</em> of.</h2>
+  <div class="projects-grid">
+
+    <div class="proj-card reveal">
+      <div class="proj-glow"></div>
+      <div class="proj-num">01</div>
+      <div class="proj-title">Coatings by Spinks</div>
+      <div class="proj-type">Industry-Based Website</div>
+      <div class="proj-desc">Developed responsive frontend pages optimized for desktop and mobile. Implemented UI/UX designs ensuring consistent branding and layout structure. Improved website performance and cross-browser compatibility.</div>
+      <div class="proj-stack">
+        <span class="tech-tag">HTML5</span>
+        <span class="tech-tag">CSS3</span>
+        <span class="tech-tag">JavaScript</span>
+        <span class="tech-tag">Tailwind CSS</span>
+        <span class="tech-tag">Bootstrap</span>
+      </div>
+    </div>
+
+    <div class="proj-card reveal">
+      <div class="proj-glow"></div>
+      <div class="proj-num">02</div>
+      <div class="proj-title">Tag-less Printing</div>
+      <div class="proj-type">B2B Manufacturing Website</div>
+      <div class="proj-desc">Built reusable UI components for product and service pages. Translated Figma designs into pixel-perfect web interfaces. Ensured accessibility and responsive design across devices.</div>
+      <div class="proj-stack">
+        <span class="tech-tag">HTML5</span>
+        <span class="tech-tag">CSS3</span>
+        <span class="tech-tag">JavaScript</span>
+        <span class="tech-tag">Tailwind CSS</span>
+        <span class="tech-tag">Bootstrap</span>
+      </div>
+    </div>
+
+    <div class="proj-card reveal">
+      <div class="proj-glow"></div>
+      <div class="proj-num">03</div>
+      <div class="proj-title">Pad Printing Pads Online</div>
+      <div class="proj-type">B2B E-commerce Website</div>
+      <div class="proj-desc">Developed structured product listing and detail pages. Optimized frontend performance and page load speed. Maintained consistent UI/UX across multiple browsers.</div>
+      <div class="proj-stack">
+        <span class="tech-tag">HTML5</span>
+        <span class="tech-tag">CSS3</span>
+        <span class="tech-tag">JavaScript</span>
+        <span class="tech-tag">Bootstrap</span>
+      </div>
+    </div>
+
+    <div class="proj-card reveal">
+      <div class="proj-glow"></div>
+      <div class="proj-num">04</div>
+      <div class="proj-title">Pad Printing Plates Online</div>
+      <div class="proj-type">B2B E-commerce Website</div>
+      <div class="proj-desc">Designed and implemented responsive layouts for product-based pages. Improved user navigation and UI consistency. Performed debugging and testing using Chrome DevTools.</div>
+      <div class="proj-stack">
+        <span class="tech-tag">HTML5</span>
+        <span class="tech-tag">CSS3</span>
+        <span class="tech-tag">JavaScript</span>
+        <span class="tech-tag">Bootstrap</span>
+      </div>
+    </div>
+
+    <div class="proj-card reveal">
+      <div class="proj-glow"></div>
+      <div class="proj-num">05</div>
+      <div class="proj-title">Dhaga-Raga</div>
+      <div class="proj-type">Brand / Business Website</div>
+      <div class="proj-desc">Developed modern, responsive UI for brand presentation. Ensured clean code structure and cross-browser compatibility. Enhanced overall user experience through layout optimization.</div>
+      <div class="proj-stack">
+        <span class="tech-tag">HTML5</span>
+        <span class="tech-tag">CSS3</span>
+        <span class="tech-tag">JavaScript</span>
+        <span class="tech-tag">Tailwind CSS</span>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ── EDUCATION ── -->
+<section id="education" class="sec-wrap">
+  <div class="sec-divider reveal">
+    <span class="sec-num">05</span>
+    <span class="sec-line"></span>
+    <span class="sec-label">Education & Achievements</span>
+  </div>
+  <h2 class="sec-heading reveal">Foundations &amp; <em>milestones</em>.</h2>
+  <div class="edu-grid">
+    <div class="edu-card reveal">
+      <div class="edu-icon">🎓</div>
+      <div class="edu-degree">Bachelor of Computer Science & Engineering</div>
+      <div class="edu-inst" style="margin-top:0.6rem;">JC BOSE University</div>
+    </div>
+    <div class="edu-card reveal">
+      <div class="edu-icon">🏆</div>
+      <div class="edu-degree" style="margin-bottom:1.2rem;">Certifications</div>
+      <div class="cert-list">
+        <div class="cert-item">
+          <span class="cert-dot gold"></span>
+          <span class="cert-name">Node.js Certification — Ducat</span>
+          <span class="cert-year">Aug 2023</span>
+        </div>
+        <div class="cert-item">
+          <span class="cert-dot teal"></span>
+          <span class="cert-name">Python Certification</span>
+          <span class="cert-year">2022</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── CONTACT ── -->
+<section id="contact">
+  <div class="reveal">
+    <div class="sec-divider" style="margin-bottom:1.5rem;">
+      <span class="sec-num">06</span>
+      <span class="sec-line"></span>
+      <span class="sec-label">Let's Connect</span>
+    </div>
+    <h2 class="contact-heading">Let's build something<br><em>extraordinary</em> together.</h2>
+  </div>
+  <div class="contact-links reveal">
+    <a href="mailto:mohapatraalisha29@gmail.com" class="contact-link">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+      Email Me
+    </a>
+    <a href="tel:+918287878520" class="contact-link">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.63 13a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.54 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 9.91a16 16 0 0 0 6.29 6.29l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+      Call
+    </a>
+    <a href="https://linkedin.com" target="_blank" rel="noopener" class="contact-link">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+      LinkedIn
+    </a>
+  </div>
+</section>
+
+<!-- ── FOOTER ── -->
+<footer>
+  <div class="footer-brand">Alisha Mohapatra</div>
+  <div class="footer-note">Designed with ♡ · Faridabad, India · 2026</div>
+</footer>
+
+<script>
+  // ── Scroll Reveal ──
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry, i) => {
+      if (entry.isIntersecting) {
+        setTimeout(() => entry.target.classList.add('visible'), 80);
+        observer.unobserve(entry.target);
       }
-      .fade-in {
-        animation: fadeIn 2s ease-in;
-      }
-      @keyframes fadeIn {
-        from { opacity: 0; transform: translateY(20px); }
-        to { opacity: 1; transform: translateY(0); }
-      }
-    </style>
-  </head>
-  <body class="bg-gradient-to-br from-purple-100 via-pink-50 to-yellow-50 text-gray-800">
-    <!-- Hero Section -->
-    <section class="relative bg-gradient-to-tr from-indigo-500 to-purple-600 text-white py-20 px-6 overflow-hidden">
-      <div class="max-w-6xl mx-auto flex flex-col-reverse lg:flex-row items-center justify-between fade-in">
-        <div class="max-w-xl">
-          <h1 class="text-5xl font-extrabold leading-tight mb-4">Hi, I'm Alisha</h1>
-          <p class="text-xl mb-6">Frontend Developer crafting stylish, accessible & responsive web apps.</p>
-          <a href="#contact" class="inline-block bg-yellow-300 text-indigo-800 px-6 py-3 font-bold rounded-full hover:bg-yellow-400 transition">Let's Connect</a>
-        </div>
-        <lottie-player src="https://assets10.lottiefiles.com/packages/lf20_pprxh53t.json" background="transparent" speed="1" style="width: 300px; height: 300px;" loop autoplay></lottie-player>
-      </div>
-      <div class="absolute top-0 left-0 w-full h-full opacity-10 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]"></div>
-    </section>
+    });
+  }, { threshold: 0.12 });
+  reveals.forEach(el => observer.observe(el));
 
-    <!-- Skills Section -->
-    <section class="py-16 px-6 bg-white fade-in">
-      <div class="max-w-5xl mx-auto text-center">
-        <h2 class="text-4xl font-bold mb-4">🚀 Skills & Tools</h2>
-        <p class="text-gray-600 mb-8">From clean code to responsive design, I build with purpose.</p>
-        <div class="flex flex-wrap justify-center gap-4">
-          <span class="bg-indigo-100 text-indigo-800 px-4 py-2 rounded-full font-semibold">HTML5</span>
-          <span class="bg-pink-100 text-pink-800 px-4 py-2 rounded-full font-semibold">CSS3</span>
-          <span class="bg-yellow-100 text-yellow-800 px-4 py-2 rounded-full font-semibold">JavaScript</span>
-          <span class="bg-purple-100 text-purple-800 px-4 py-2 rounded-full font-semibold">Tailwind CSS</span>
-          <span class="bg-green-100 text-green-800 px-4 py-2 rounded-full font-semibold">Bootstrap</span>
-          <span class="bg-red-100 text-red-800 px-4 py-2 rounded-full font-semibold">PHP</span>
-          <span class="bg-gray-200 text-gray-800 px-4 py-2 rounded-full font-semibold">Chrome DevTools</span>
-          <span class="bg-blue-100 text-blue-800 px-4 py-2 rounded-full font-semibold">Git</span>
-        </div>
-      </div>
-    </section>
+  // ── Nav active link highlight ──
+  const sections = document.querySelectorAll('section[id]');
+  const navLinks = document.querySelectorAll('.nav-links a');
+  window.addEventListener('scroll', () => {
+    let current = '';
+    sections.forEach(s => {
+      if (window.scrollY >= s.offsetTop - 120) current = s.id;
+    });
+    navLinks.forEach(a => {
+      a.style.color = a.getAttribute('href') === '#' + current ? 'var(--gold)' : '';
+    });
+  });
 
-    <!-- Experience Section -->
-    <section class="bg-gradient-to-b from-white to-gray-50 py-16 px-6 fade-in">
-      <div class="max-w-4xl mx-auto">
-        <h2 class="text-4xl font-bold mb-6 text-center">🧠 Experience</h2>
-        <div class="bg-white shadow-lg rounded-xl p-6">
-          <h3 class="text-2xl font-semibold">Web Developer @ Spinks World</h3>
-          <p class="text-sm text-gray-500">May 2023 – Present</p>
-          <ul class="list-disc list-inside mt-4 space-y-2 text-gray-700">
-            <li>Developed 2 production-ready web apps using Tailwind, JavaScript, and PHP</li>
-            <li>Collaborated with UI/UX designers to create pixel-perfect components</li>
-            <li>Conducted unit testing and debugging for cleaner, scalable code</li>
-            <li>Applied performance optimization techniques & mobile-first design</li>
-          </ul>
-        </div>
-      </div>
-    </section>
-
-    <!-- Education & Achievements -->
-    <section class="py-16 px-6 bg-white fade-in">
-      <div class="max-w-4xl mx-auto">
-        <h2 class="text-4xl font-bold mb-6 text-center">🎓 Education & Achievements</h2>
-        <div class="grid md:grid-cols-2 gap-8">
-          <div class="bg-purple-50 p-6 rounded-xl shadow">
-            <h3 class="text-xl font-semibold mb-2">Bachelor of Computer Science</h3>
-            <p class="text-gray-700">JC BOSE University</p>
-          </div>
-          <div class="bg-yellow-50 p-6 rounded-xl shadow">
-            <h3 class="text-xl font-semibold mb-2">Certifications</h3>
-            <ul class="list-disc list-inside text-gray-700">
-              <li>Node.js - Ducat, 2023</li>
-              <li>Python Programming - 2022</li>
-            </ul>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Contact Section -->
-    <section id="contact" class="bg-gradient-to-br from-purple-200 to-indigo-100 py-16 px-6 fade-in">
-      <div class="max-w-3xl mx-auto text-center">
-        <h2 class="text-4xl font-bold mb-4">💌 Contact Me</h2>
-        <p class="mb-6 text-gray-700">Let’s build something beautiful together!</p>
-        <div class="text-lg">
-          <p>📍 Faridabad, India</p>
-          <p>📧 <a href="mailto:mohapatraalisha29@gmail.com" class="text-indigo-600 font-semibold">mohapatraalisha29@gmail.com</a></p>
-          <!-- <p>📱 +91 8287878520</p> -->
-        </div>
-      </div>
-    </section>
-
-    <!-- Footer -->
-    <footer class="bg-white text-center text-sm text-gray-500 py-4">
-      &copy; 2025 Alisha Mohapatra. Crafted with 💜
-    </footer>
-  </body>
+  // ── Orb parallax (subtle) ──
+  document.addEventListener('mousemove', e => {
+    const x = (e.clientX / window.innerWidth - 0.5) * 20;
+    const y = (e.clientY / window.innerHeight - 0.5) * 20;
+    document.querySelector('.orb-1').style.transform = `translate(${x * 0.6}px, ${y * 0.6}px)`;
+    document.querySelector('.orb-3').style.transform = `translate(${-x * 0.4}px, ${-y * 0.4}px)`;
+  });
+</script>
+</body>
 </html>
